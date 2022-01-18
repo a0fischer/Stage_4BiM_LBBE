@@ -1,0 +1,146 @@
+---
+title: "Ciona recombination map"
+output: pdf_document
+classoption: landscape
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=20, fig.height=3) 
+```
+
+```{r functions, echo=FALSE}
+recombi_map <- function(file1, file2, chr) {
+  #Lecture du fichier 1
+  hotspot_data <- read.table(file = file1, header = TRUE, sep = '\t', dec = ".")
+  #Variables
+  rec_rate <- hotspot_data$X4Ner
+  rec_rate_per_kb <- hotspot_data$X4Ner.kb
+  position <- hotspot_data$Position.kb.
+  hotspot <- hotspot_data$Hotspot_Density
+  #Affichage graphique
+  plot(rec_rate_per_kb~position, type = "l", main = chr, xlab = "Position (kb)", ylab = "Recombination rate (4Ner/kb)", cex.lab = 0.8, xlim = c(0,10100), lwd = 0.1)
+  
+  #Lecture du fichier 2
+  hotspot_data <- read.table(file = file2, header = TRUE, sep = '\t', dec = ".")
+    #Variables
+  rec_rate <- hotspot_data$X4Ner
+  rec_rate_per_kb <- hotspot_data$X4Ner.kb
+  position <- hotspot_data$Position.kb.
+  hotspot <- hotspot_data$Hotspot_Density
+  #Affichage graphique
+  lines(rec_rate_per_kb~position, type = "l", col = "coral")
+  legend("topleft", legend = c("C.robusta", "C.intestinalis"), col = c("black", "coral"), lty=1, cex=0.8)
+}
+
+recombi_map_pos <- function(file1, file2, chr, start, end) {
+  #Lecture du fichier 1
+  hotspot_data <- read.table(file = file1, header = TRUE, sep = '\t', dec = ".")
+  #Variables
+  rec_rate <- hotspot_data$X4Ner
+  rec_rate_per_kb <- hotspot_data$X4Ner.kb
+  position <- hotspot_data$Position.kb.
+  hotspot <- hotspot_data$Hotspot_Density
+  #Affichage graphique
+  plot(rec_rate_per_kb~position, type = "l", main = chr, xlab = "Position (kb)", ylab = "Recombination rate (4Ner/kb)", cex.lab = 0.8, xlim = c(start, end))
+  
+  #Lecture du fichier 2
+  hotspot_data <- read.table(file = file2, header = TRUE, sep = '\t', dec = ".")
+    #Variables
+  rec_rate <- hotspot_data$X4Ner
+  rec_rate_per_kb <- hotspot_data$X4Ner.kb
+  position <- hotspot_data$Position.kb.
+  hotspot <- hotspot_data$Hotspot_Density
+  #Affichage graphique
+  lines(rec_rate_per_kb~position, type = "l", col = "coral")
+  abline(h=mean(rec_rate_per_kb), col = "brown", lty = 2)
+  legend("topleft", legend = c("C.robusta", "C.intestinalis"), col = c("black", "coral"), lty=1, cex=0.8)
+  
+  
+}
+```
+
+
+```{r files, echo=FALSE}
+#Fichiers C.robusta (j'ai pas trouvé plus efficace :/)
+rob_chr1_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome1_summary.txt"
+rob_chr2_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome2_summary.txt"
+rob_chr3_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome3_summary.txt"
+rob_chr4_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome4_summary.txt"
+rob_chr5_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome5_summary.txt"
+rob_chr6_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome6_summary.txt"
+rob_chr7_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome7_summary.txt"
+rob_chr8_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome8_summary.txt"
+rob_chr9_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome9_summary.txt"
+rob_chr10_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome10_summary.txt"
+rob_chr11_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome11_summary.txt"
+rob_chr12_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome12_summary.txt"
+rob_chr13_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome13_summary.txt"
+rob_chr14_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.robusta/c_robusta_stat_chromosome14_summary.txt"
+
+c_robusta <- c(rob_chr1_data, rob_chr2_data, rob_chr3_data, rob_chr4_data, rob_chr5_data, rob_chr6_data, rob_chr7_data, rob_chr8_data, rob_chr9_data, rob_chr10_data, rob_chr11_data, rob_chr12_data, rob_chr13_data, rob_chr14_data)
+
+#Fichiers C.intestinalis
+int_chr1_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome1_summary.txt"
+int_chr2_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome2_summary.txt"
+int_chr3_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome3_summary.txt"
+int_chr4_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome4_summary.txt"
+int_chr5_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome5_summary.txt"
+int_chr6_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome6_summary.txt"
+int_chr7_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome7_summary.txt"
+int_chr8_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome8_summary.txt"
+int_chr9_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome9_summary.txt"
+int_chr10_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome10_summary.txt"
+int_chr11_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome11_summary.txt"
+int_chr12_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome12_summary.txt"
+int_chr13_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome13_summary.txt"
+int_chr14_data <- "../2.Statistical_phasing_map/6.LDhat_maps/C.intestinalis/c_int_stat_chromosome14_summary.txt"
+
+c_intestinalis <- c(int_chr1_data, int_chr2_data, int_chr3_data, int_chr4_data, int_chr5_data, int_chr6_data, int_chr7_data, int_chr8_data, int_chr9_data, int_chr10_data, int_chr11_data, int_chr12_data, int_chr13_data, int_chr14_data)
+
+#Les chromosomes
+chromosome <- c("Chromosome1", "Chromosome2", "Chromosome3", "Chromosome4", "Chromosome5", "Chromosome6", "Chromosome7", "Chromosome8", "Chromosome9", "Chromosome10", "Chromosome11", "Chromosome12", "Chromosome13", "Chromosome14")
+
+```
+# Carte n°2 de recombinaison de C.intestinalis et C.robusta (23/06/21) : phasage statistique
+
+### Data
+
+File : out.recode_noRulei_parents.vcf
+
+Individuals : 11 indv C.robusta and 13 indv C.intestinalis
+
+Only parents, not phased, with missing genotypes
+
+### Filtering SNPs
+
+Filtering SNPs with vcftools : biallelic, removing indels, 50% max missing genotypes, MAF > 0.1
+
+Phasing with ShapeIt (statistical phasing)
+
+Estimated map resolution : 1 SNP / 0.1 bp for both species
+
+Estimated theta : 0.0533579 (C.intestinalis) and 0.0153244 (C.robusta) (Romiguier et al. (2014) Nature 515: 261–263. https://doi.org/10.1038/nature13685)
+
+\newpage
+  
+### Recombination map
+
+Recombination map built with LDhat, rhomap to identify hotspots.
+
+
+```{r main, echo=FALSE}
+for (i in 1:14){
+  recombi_map(c_robusta[i], c_intestinalis[i], chromosome[i])
+}
+```
+\newpage
+
+# Introgression in chromosome 5 (between 400kb and 1200kb)
+
+```{r main2, echo=FALSE}
+recombi_map_pos(c_robusta[5], c_intestinalis[5], chromosome[5], 400, 1200)
+```
+
+C.robusta introgression occurs on chromosome 5, between 400kb and 1200kb. While looking at this location on the chromosome, we can observe that recombination rate of C.robusta is reduced at position 800kb where there has been observed a trough of FST max. However no clear variations of recombination rate can be determined for C.intestinalis.
+
+
